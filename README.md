@@ -1,20 +1,35 @@
 # JamCam
 
-Records live TfL traffic camera footage when you're nearby. Set a location on the map, and any cameras within range automatically download their video clips. Clear your location to stop and save.
+Monitors live TfL traffic cameras near a location and saves the footage as MP4. Set a pin on the map and any cameras within your chosen radius will automatically record. Clear the pin to stop and save.
 
-## Requirements
+---
 
-- Python 3.8+
-- Windows (for `start.bat`/ngrok launcher) or any OS for local use
+## Prerequisites
 
-## Setup
+- Python 3.8 or newer — https://www.python.org/downloads
+- Git — https://git-scm.com/downloads
+
+---
+
+## Installation
+
+Clone the repo and install dependencies:
 
 ```
+git clone https://github.com/HadenHenke/jamcam.git
+cd jamcam
 pip install -r requirements.txt
+```
+
+Copy the example config:
+
+```
 cp config.example.py config.py
 ```
 
-Edit `config.py` if you want to change the port or recordings folder.
+Open `config.py` and change anything you need — by default it runs on port 8080 and saves recordings to a `recordings/` folder in the project directory.
+
+---
 
 ## Running locally
 
@@ -22,21 +37,34 @@ Edit `config.py` if you want to change the port or recordings folder.
 python app.py
 ```
 
-Open `http://localhost:8080` in your browser.
+Open `http://localhost:8080` in your browser. Click anywhere on the map to set a location — cameras within the radius will start recording immediately. Adjust the slider to change the radius. Click **clear location** to stop recording and save the footage.
 
-## Running on your phone
+Recordings are saved to `recordings/` with a timestamped subfolder per session. If a camera captured multiple clips they are automatically joined into a single MP4.
 
-Double-click `start.bat`. On first run it will:
-1. Install ngrok if needed
-2. Ask for your ngrok authtoken — get one free at https://dashboard.ngrok.com/signup
-3. Print an `https://` URL to open on your phone
+---
 
-The authtoken is a one-time setup. ngrok stores it in its own config file — you don't need to add it anywhere in this project.
+## Accessing from your phone
 
-## Usage
+Because geolocation in the browser requires HTTPS, you need a secure tunnel from your laptop to your phone. This uses [ngrok](https://ngrok.com), which is free.
 
-1. Click anywhere on the map to set your location (or tap **Use real location** on the phone)
-2. Adjust the radius slider — cameras within range start recording automatically
-3. Tap **clear location** to stop recording and save
+**On your laptop:**
 
-Recordings are saved to the `recordings/` folder (or the path set in `config.py`). Each session gets a timestamped subfolder. If multiple clips were captured for a camera they are concatenated into a single MP4.
+1. Make sure the app is not already running
+2. Double-click `start.bat`
+
+On first run it will:
+- Install ngrok automatically via winget
+- Ask you to create a free account at https://dashboard.ngrok.com/signup and paste your authtoken — this is a one-time step, ngrok saves it for future runs
+- Start the camera server
+- Start the ngrok tunnel
+- Print an `https://` URL in the console, for example:
+  ```
+  https://abc123.ngrok-free.app
+  ```
+
+3. Open that URL in Safari on your iPhone
+4. Tap **⦿ Use real location** and allow location access when prompted
+
+The app will then track your GPS position and record any cameras you walk near. When you're done, tap **clear location** — the footage saves to the `recordings/` folder on your laptop.
+
+> The ngrok URL changes each time you run `start.bat`. If you want a fixed URL, you can set a free static domain in the ngrok dashboard.
