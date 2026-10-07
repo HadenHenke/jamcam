@@ -65,6 +65,6 @@ On first run it will:
 3. Open that URL in Safari on your iPhone
 4. Tap **⦿ Use real location** and allow location access when prompted
 
-The app will then track your GPS position and record any cameras you walk near. When you're done, tap **clear location** — the footage saves to the `recordings/` folder on your laptop.
+The app will then track your GPS position and record any cameras you walk x distance form. When you're done, tap **clear location** — the footage saves to the `recordings/` folder on your laptop.
 
 > The ngrok URL changes each time you run `start.bat`. If you want a fixed URL, you can set a free static domain in the ngrok dashboard.
